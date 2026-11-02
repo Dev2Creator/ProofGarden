@@ -194,6 +194,34 @@ def cmd_examples_list(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_playground(args: argparse.Namespace) -> int:
+    """Serve the offline playground on localhost."""
+    import http.server
+    import functools
+
+    root = REPO_ROOT / "playground"
+    if not root.is_dir():
+        print(f"playground directory not found: {root}", file=sys.stderr)
+        return 2
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(root))
+    try:
+        server = http.server.ThreadingHTTPServer(("127.0.0.1", args.port), handler)
+    except OSError as exc:
+        print(f"could not bind port {args.port}: {exc}", file=sys.stderr)
+        return 2
+    url = f"http://localhost:{args.port}"
+    print(f"ProofGarden playground on {url}")
+    print(f"Browser test suite on {url}/tests.html")
+    print("Press Ctrl+C to stop.")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nstopped.")
+    finally:
+        server.server_close()
+    return 0
+
+
 def cmd_system_info(args: argparse.Namespace) -> int:
     payload = {
         "name": "ProofGarden",
@@ -260,6 +288,10 @@ def build_parser() -> argparse.ArgumentParser:
     ex_list = examples_sub.add_parser("list", help="list example model files")
     ex_list.add_argument("--json", action="store_true")
     ex_list.set_defaults(func=cmd_examples_list)
+
+    playground = sub.add_parser("playground", help="serve the browser playground locally")
+    playground.add_argument("--port", type=int, default=8000, help="port to bind (default 8000)")
+    playground.set_defaults(func=cmd_playground)
 
     system = sub.add_parser("system", help="environment information")
     system_sub = system.add_subparsers(dest="system_command", required=True)

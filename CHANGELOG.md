@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.2.0 — 2026-11-02
+
+Curriculum and verification hardening.
+
+### Added
+- Eight new lessons completing the foundations track (quantifiers, scope and
+  negation, sets, relations, functions, direct proof, induction, counterexamples).
+- `python3 -m proofgarden playground --port N` serves the playground on localhost.
+- `playground/tests.html` browser-side assertion suite, plus Node-runner mirrors
+  in `tests/playground/`.
+- `tests/test_sat_crosscheck.py`: DPLL results compared against exhaustive
+  enumeration on 400 randomly generated formulas, including model validation.
+- EULA sections on contribution ownership and on the need for independent legal
+  review.
+
+### Changed
+- README rewritten: real clone URL, curriculum status table, three-layer test
+  instructions, explicit authorship and verification sections.
+- Public author identity standardised as Aneek Mukherjee (Dev2Creator) across
+  README, EULA, CITATION.cff and pyproject.toml.
+
+### Review status
+- Lessons 3–10 have not been independently reviewed. Treat their prose and
+  exercise answers as drafts pending review.
+
 ## 0.1.0 — 2026-11-02
 
 First usable release.

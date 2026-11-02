@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ProofGarden — browser test suite</title>
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 2rem; background: #faf9f7; color: #1c1b19; }
+  h1 { font-family: Georgia, serif; font-size: 1.6rem; margin: 0 0 .25rem; }
+  p.lede { color: #6b6660; margin: 0 0 1.5rem; }
+  #summary { font-weight: 600; margin-bottom: 1rem; }
+  #summary.pass { color: #1d6b3a; }
+  #summary.fail { color: #a11f1f; }
+  ol { padding-left: 1.25rem; }
+  li { margin: .35rem 0; font-family: ui-monospace, SFMono-Regular, monospace; font-size: .9rem; }
+  li.ok::marker { color: #1d6b3a; }
+  li.bad::marker { color: #a11f1f; }
+  .detail { color: #6b6660; }
+</style>
+</head>
+<body>
+<h1>ProofGarden browser test suite</h1>
+<p class="lede">Runs the playground engines in this page. Same assertions as <code>node --test tests/playground/*.test.js</code>, executed in the browser.</p>
+<div id="summary">running…</div>
+<ol id="results"></ol>
+
+<script src="js/logic.js"></script>
+<script src="js/models.js"></script>
+<script src="js/modelchecker.js"></script>
+<script>
+(function () {
+  const results = [];
+  let failures = 0;
+
+  function check(name, fn) {
+    try {
+      const detail = fn();
+      results.push({ name, ok: true, detail: detail || '' });
+    } catch (err) {
+      failures += 1;
+      results.push({ name, ok: false, detail: err.message });
+    }
+  }
+  function eq(actual, expected, label) {
+    if (actual !== expected) throw new Error(`${label || 'value'}: expected ${expected}, got ${actual}`);
+  }
+  function eqJson(actual, expected, label) {
+    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+      throw new Error(`${label || 'value'}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`);
+    }
+  }
+
+  const L = window.LogicLab;
+  const M = window.ModelChecker;
+  const model = (id) => window.PG_MODELS.find((m) => m.id === id);
+
+  check('tautology classification', () => {
+    eqJson(L.truthTable(L.parse('(P AND Q) IMPLIES P')).classification, 'tautology');
+  });
+  check('contradiction classification', () => {
+    eqJson(L.truthTable(L.parse('P AND NOT P')).classification, 'contradiction');
+  });
+  check('contingent classification', () => {
+    eqJson(L.truthTable(L.parse('P XOR Q')).classification, 'contingent');
+  });
+  check('truth table row count is 2^n', () => {
+    eqJson(L.truthTable(L.parse('(P AND Q) OR R')).rows.length, 8);
+  });
+  check('De Morgan equivalence', () => {
+    const a = L.truthTable(L.parse('NOT (P AND Q)')).rows.map((r) => r.result);
+    const b = L.truthTable(L.parse('(NOT P) OR (NOT Q)')).rows.map((r) => r.result);
+    eqJson(a, b);
+  });
+  check('malformed formula is rejected', () => {
+    let threw = false;
+    try { L.parse('P AND'); } catch (e) { threw = true; }
+    eq(threw, true, 'parse should throw');
+  });
+
+  check('traffic light explores 3 states', () => {
+    eqJson(M.explore(model('traffic_light')).order.length, 3);
+  });
+  check('traffic light invariant verified', () => {
+    const m = model('traffic_light');
+    eqJson(M.checkInvariant(M.explore(m), m.invariants[0]).outcome, 'verified');
+  });
+  check('counter overflow violated with 5-step trace', () => {
+    const m = model('counter_overflow');
+    const check = M.checkInvariant(M.explore(m), m.invariants[0]);
+    eqJson(check.outcome, 'violated');
+    eqJson(check.trace.length, 5);
+    eqJson(check.trace[4].state, { count: 4 });
+  });
+  check('deadlock detected', () => {
+    eqJson(M.checkDeadlock(M.explore(model('deadlock_locks'))).outcome, 'violated');
+  });
+  check('state limit yields incomplete', () => {
+    const m = model('counter_overflow');
+    eqJson(M.explore(m, 2).complete, false);
+    eqJson(M.checkInvariant(M.explore(m, 2), m.invariants[0]).outcome, 'incomplete');
+  });
+  check('eventually finds amber', () => {
+    const r = M.explore(model('traffic_light'));
+    eq(M.eventually(r, M.predicateFromText('light=amber')), true, 'eventually');
+    eq(M.always(r, M.predicateFromText('light=amber')), false, 'always');
+  });
+  check('until holds before the target', () => {
+    const r = M.explore(model('traffic_light'));
+    eq(M.until(r, (s) => s.light !== 'amber', M.predicateFromText('light=amber')), true, 'until');
+  });
+
+  const okCount = results.length - failures;
+  window.__PG_TEST_SUMMARY__ = { total: results.length, passed: okCount, failed: failures };
+  const summary = document.getElementById('summary');
+  summary.textContent = failures === 0
+    ? `${okCount}/${results.length} browser checks passed`
+    : `${failures} of ${results.length} browser checks failed`;
+  summary.className = failures === 0 ? 'pass' : 'fail';
+
+  const list = document.getElementById('results');
+  results.forEach((r) => {
+    const li = document.createElement('li');
+    li.className = r.ok ? 'ok' : 'bad';
+    li.textContent = r.name;
+    if (r.detail) {
+      const span = document.createElement('span');
+      span.className = 'detail';
+      span.textContent = ' — ' + r.detail;
+      li.appendChild(span);
+    }
+    list.appendChild(li);
+  });
+})();
+</script>
+</body>
+</html>

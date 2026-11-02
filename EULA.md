@@ -3,7 +3,7 @@
 **Project:** ProofGarden
 **Project owner:** Aneek Mukherjee (Dev2Creator)
 **Contact:** `[OWNER EMAIL — TO BE CONFIRMED]`
-**Version:** 0.1.0 (draft, November 2026)
+**Version:** 0.2.0 (draft, November 2026)
 
 > This is a technical draft prepared with the project, not legal advice. It has not been reviewed by a lawyer. The project owner should obtain qualified legal review before public distribution, especially for commercial use and cross-border distribution. Nothing in this document should be read as a promise that any clause is enforceable in your jurisdiction.
 
@@ -57,7 +57,47 @@ This permission terminates automatically if you breach these terms. On terminati
 
 `[OWNER REVIEW REQUIRED — governing law and jurisdiction not yet specified by the project owner. Do not treat this placeholder as a legal choice.]`
 
-## 10. Contact
+## 11. Contributions
+
+If you submit a contribution (code, documentation, lesson text, examples, or
+any other material) to this project, the following applies:
+
+1. **You keep your copyright.** Submitting a contribution does not transfer
+   ownership of your work to the project owner.
+2. **You grant a license.** By submitting a contribution, you grant the
+   project owner a perpetual, worldwide, non-exclusive, royalty-free,
+   irrevocable license to use, reproduce, modify, distribute, and relicense
+   your contribution as part of this project, including under the terms of
+   this EULA.
+3. **You confirm you may grant it.** You represent that you have the right to
+   submit the material and that it does not knowingly infringe third-party
+   rights. If your employer or institution owns your work, confirm you have
+   permission before contributing.
+4. **No obligation to accept.** The project owner may decline or remove any
+   contribution.
+5. **Attribution.** Accepted contributions may be credited in the repository
+   history. Credit is not a licence, ownership, or endorsement.
+
+Contributions are accepted only through the process described in
+`CONTRIBUTING.md`. A contribution without an explicit statement that you agree
+to this section may be closed without being merged.
+
+## 12. No legal advice; legal review
+
+This EULA is a plain-language draft prepared by the project owner. It is not
+legal advice, and it has not been reviewed by a qualified lawyer in any
+jurisdiction. Before relying on this agreement — for publication, commercial
+use, or distribution — obtain independent legal review, especially regarding:
+
+- enforceability of the liability limitations and warranty disclaimers;
+- consumer-protection rules that may override parts of this agreement;
+- the contribution licence in section 11;
+- the governing-law and jurisdiction clause in section 9.
+
+If any provision is found unenforceable, the remaining provisions continue in
+effect to the maximum extent permitted by law.
+
+## 13. Contact
 
 `[OWNER EMAIL — TO BE CONFIRMED]`
 

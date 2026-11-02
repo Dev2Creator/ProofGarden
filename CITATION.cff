@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you reference ProofGarden in teaching material, please cite it as below."
 title: "ProofGarden: an educational laboratory for formal methods"
-version: 0.1.0
+version: 0.2.0
 date-released: 2026-11-02
 authors:
   - family-names: Mukherjee

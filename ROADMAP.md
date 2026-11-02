@@ -1,12 +1,12 @@
 # Roadmap
 
-## Next (0.2)
-- Predicate logic: quantifiers, scoping, quantifier negation exercises.
+## Next (0.3)
+- Independent review of lessons 3–10 (external reader required).
 - CTL model checking with explicit fixpoints (EX, EU, AF, AG).
 - Relational invariants via a small safe expression evaluator for JSON models.
 - More case studies: elevator, producer-consumer, leader election.
 
-## Later (0.3+)
+## Later (0.4+)
 - External ecosystem guides (TLA+, Lean 4, Coq, Isabelle/HOL, Z3, Alloy) — written only after links are verified.
 - Abstract interpretation teaching module.
 - SMT-lite: difference logic over integers.

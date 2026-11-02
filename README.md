@@ -2,79 +2,83 @@
 
 **Learn, Explore, Verify.**
 
-ProofGarden is an educational laboratory for formal methods: propositional logic, state machines, invariants, bounded model checking and Hoare logic. Everything here runs locally, uses the Python standard library, and reports exactly what it checked — no overstated claims.
+An educational laboratory for formal methods: propositional logic, state
+machines, bounded model checking, and Hoare-style program reasoning — with an
+offline browser playground and a curriculum.
 
-> **License:** distributed under a custom end-user license agreement, **not** an OSI-approved open-source license. Read [EULA.md](EULA.md) before downloading or using this project.
-
----
-
-## What works today
-
-| Area | Status |
-| --- | --- |
-| Propositional logic parser (no `eval`) | working |
-| Truth tables, tautology/contradiction detection | working |
-| Logical equivalence with counterexamples | working |
-| DPLL SAT solver (Tseitin CNF + unit propagation) | working |
-| State systems, BFS exploration, reachability | working |
-| Invariant checking with counterexample traces | working |
-| Deadlock detection | working |
-| Bounded exploration with explicit "incomplete" outcome | working |
-| Hoare logic: symbolic weakest preconditions + finite-domain VC checks | working, limited |
-| CLI (`python -m proofgarden`) | working |
-| Browser playground (logic + graphs + model checking + temporal + curriculum) | working, offline |
-| Curriculum lessons | 2 of 16 written |
-| Predicate logic / CTL / SMT / theorem proving | not implemented (see ROADMAP) |
+- **Version:** 0.2.0 (see `CHANGELOG.md`)
+- **Public author identity:** Aneek Mukherjee (Dev2Creator)
+- **License:** Custom EULA, AS IS — see [`EULA.md`](EULA.md)
+- **Status:** foundation track complete (10 of 16 lessons); formal-methods
+  track in progress
 
 ---
 
-## Install and run
+## 1. What this is
 
-Python 3.11 or newer. No third-party runtime dependencies.
+ProofGarden is a small, working toolkit plus study material. Every claim the
+tools make is produced by real computation over an explicit finite model, and
+every limitation is written down.
+
+Three dimensions:
+
+1. **Learn** — 10 written lessons covering the four foundation units:
+   propositional logic, predicate logic, sets/relations/functions, and
+   mathematical reasoning.
+2. **Explore** — a browser playground that runs entirely offline: truth
+   tables, state-machine graphs, BFS model checking with traces.
+3. **Verify** — a Python engine that computes truth tables, solves SAT by
+   DPLL, explores state systems breadth-first, and checks Hoare-style
+   verification conditions on a declared finite domain.
+
+## 2. What this is not
+
+- Not a theorem prover. No first-order reasoning, no SMT, no tactic language.
+- Not a production verifier. It handles finite models and bounded exploration.
+- Not a substitute for Lean, Coq, Isabelle, TLA⁺, Alloy, or Z3. It is the
+  on-ramp, not the destination. `docs/limitations.md` lists every gap.
+
+## 3. Quick start
 
 ```bash
-git clone <this repository>
+git clone https://github.com/Dev2Creator/ProofGarden.git
 cd ProofGarden
-python -m proofgarden --help
-python -m proofgarden logic truth-table "(P AND Q) IMPLIES P"
-python -m proofgarden modelcheck examples/models/counter_overflow.json
-python -m proofgarden examples list
+python3 -m venv .venv && . .venv/bin/activate
+pip install -e .
 ```
 
-Tests use `unittest` only:
+No third-party runtime dependencies. Python 3.9+.
 
 ```bash
-python -m unittest discover -s tests -v
+# logic
+python3 -m proofgarden logic truth-table "(P AND Q) IMPLIES P"
+python3 -m proofgarden logic classify "P OR NOT P"
+python3 -m proofgarden logic equiv "NOT (P AND Q)" "(NOT P) OR (NOT Q)"
+python3 -m proofgarden logic sat "(P OR Q) AND NOT P"
+
+# model checking
+python3 -m proofgarden examples list
+python3 -m proofgarden modelcheck counter_overflow.json
+
+# Hoare logic
+python3 -m proofgarden hoare swap
+
+# playground on localhost
+python3 -m proofgarden playground --port 8000
+# then open http://localhost:8000
 ```
 
-The playground needs no server. Open `playground/index.html` in a browser; it works from `file://` because example models are embedded in `playground/js/models.js`.
+Add `--json` to any check command for machine-readable output.
 
----
-
-## Real output
+## 4. Example output
 
 ```
-$ python -m proofgarden logic truth-table "(P AND Q) IMPLIES P"
-Formula: ((P AND Q) IMPLIES P)
+$ python3 -m proofgarden modelcheck counter_overflow.json
 
-P     | Q     | RESULT
-------+-------+-------
-FALSE | FALSE | TRUE
-FALSE | TRUE  | TRUE
-TRUE  | FALSE | TRUE
-TRUE  | TRUE  | TRUE
-
-Classification: tautology
-Every assignment satisfies the formula.
-```
-
-```
-$ python -m proofgarden modelcheck counter_overflow.json
 Model: counter_overflow
 Explored 5 states and 8 transitions.
 
 [FAIL] invariant: counter_stays_below_4
-       Invariant 'counter_stays_below_4' is violated in a reachable state. The trace shows one path to the violation.
        counterexample trace:
   0. {'count': 0}  <- (initial)
   1. {'count': 1}  <- inc
@@ -83,68 +87,114 @@ Explored 5 states and 8 transitions.
   4. {'count': 4}  <- inc
 ```
 
-Both outputs above were produced by this repository and are stable enough to serve as regression tests (`tests/test_cli.py` asserts them).
+The trace is a proof that the negated claim holds. `violated` is a successful
+result, not an error.
 
----
+## 5. Features
 
-## Guide to the folders
+| Area | What works today |
+| --- | --- |
+| Propositional logic | lexer, parser (precedence, associativity), evaluator, truth tables, classification, equivalence with counterexample |
+| SAT | Tseitin CNF encoding, DPLL with unit propagation and pure-literal elimination |
+| State systems | explicit states and labelled edges, JSON model format, Python API for programmatic systems |
+| Model checking | BFS exploration, invariants as forbidden patterns, reachability, deadlock freedom, shortest counterexample traces, state/depth bounds |
+| Hoare logic | assignment, sequencing, conditionals, annotated loops; weakest-precondition computation; verification conditions checked on a declared finite domain |
+| CLI | `logic`, `modelcheck`, `hoare`, `examples`, `playground`, `system` — with `--json` |
+| Playground | Logic Lab, State Machine Explorer, Model Checking Lab, Invariant Playground with repair toggle, Temporal Logic Explorer (G/F/U), curriculum tracker |
+
+## 6. Curriculum
+
+Ten lessons are written; six formal-methods lessons remain. Foundations are
+complete.
+
+| # | Lesson | Unit | Status |
+| --- | --- | --- | --- |
+| 1 | Propositional logic | Foundations | written |
+| 2 | State machines | Foundations | written |
+| 3 | Predicates and quantifiers | Foundations | written |
+| 4 | Scope, binding, quantifier negation | Foundations | written |
+| 5 | Sets and operations | Foundations | written |
+| 6 | Relations and equivalence | Foundations | written |
+| 7 | Functions | Foundations | written |
+| 8 | Direct proof and contradiction | Foundations | written |
+| 9 | Mathematical induction | Foundations | written |
+| 10 | Counterexamples, necessity, sufficiency | Foundations | written |
+| 11 | Temporal logic: LTL and CTL | Formal methods | planned |
+| 12 | Invariants and inductive assertions | Formal methods | planned |
+| 13 | Ghost state and history variables | Formal methods | planned |
+| 14 | Refinement and abstraction mappings | Formal methods | planned |
+| 15 | Concurrency: interleaving and linearisability | Formal methods | planned |
+| 16 | Distributed systems: leader election and safety | Formal methods | planned |
+
+Start at [`curriculum/01-propositional-logic/lesson.md`](curriculum/01-propositional-logic/lesson.md).
+
+## 7. Testing
+
+Three independent layers, all runnable offline:
+
+```bash
+# Python: 64 unit, integration and cross-check tests
+python3 -m unittest discover -s tests -v
+
+# JavaScript: 17 engine tests on Node's built-in runner
+node --test tests/playground/*.test.js
+
+# Browser: open the in-page assertion suite
+python3 -m proofgarden playground --port 8000
+# then http://localhost:8000/tests.html
+```
+
+The SAT solver is cross-checked against exhaustive truth-table enumeration on
+randomly generated small formulas (`tests/test_sat_crosscheck.py`), so the two
+independent implementations must agree before a build is accepted.
+
+CI runs the Python suite on 3.9–3.12 and a compile check; see
+`.github/workflows/ci.yml`.
+
+## 8. Project structure
 
 ```
-proofgarden/          Python package
-  logic/              lexer, parser, AST, evaluator, truth tables, DPLL
-  modelchecking/      breadth-first bounded model checker
-  verification/       Hoare logic, weakest preconditions
-  cli/                argparse command-line interface
-examples/models/      four executable models (success and failure)
-tests/                60 automated tests
-curriculum/           lessons in Markdown
-docs/                 architecture and limitations
-playground/           offline HTML/CSS/JS laboratory
+proofgarden/
+  logic/            lexer, parser, AST, evaluator, truth tables, DPLL SAT
+  modelchecking/    BFS explorer, invariants, reachability, deadlocks
+  verification/     Hoare logic and weakest preconditions
+  cli/              argparse command surface
+  state.py          state systems and the JSON model format
+  traces.py         structured counterexample traces
+curriculum/         10 written lessons, one folder per lesson
+examples/models/    four runnable models, two of them deliberately broken
+playground/         self-contained HTML/CSS/JS lab, no build step
+tests/              Python suites, Node suites, fixtures
+docs/               architecture and limitations
+scripts/            helper scripts
 ```
 
----
+## 9. Design rules
 
-## Semantics you can rely on
+1. **No `eval`.** Formulas are parsed into an explicit AST. User input never
+   becomes Python code, and `tests/test_logic.py` asserts it.
+2. **Bounded means bounded.** When the explorer hits `--max-states` or
+   `--max-depth`, the outcome is `incomplete`, never `verified`.
+3. **Violations carry traces.** Every negative result includes a shortest path
+   from an initial state.
+4. **Limits are documented.** `docs/limitations.md` is part of the product.
+5. **Two engines must agree.** The Python and JavaScript logic engines are
+   cross-checked on the same formulas.
 
-ProofGarden distinguishes three outcomes and never blurs them:
+## 10. Authorship and license
 
-- **verified** — the entire reachable state space of the *given finite model* was explored and the property held.
-- **violated** — a reachable state falsified the property; a trace is returned.
-- **incomplete** — exploration stopped at a configured limit. Nothing is claimed.
+Public author identity: **Aneek Mukherjee (Dev2Creator)**. This is the name
+used in `README.md`, `EULA.md`, `CITATION.cff`, and `pyproject.toml`. The
+internal build specification (`AGENT.md`) is a private working document and is
+not published with the project; where the two disagree, the public identity
+above is authoritative.
 
-A finite-state check is not a proof about arbitrary or unbounded systems. See [docs/limitations.md](docs/limitations.md).
+Licensed under a custom end-user license — see [`EULA.md`](EULA.md). It is not
+an OSI-approved open-source license. It is not legal advice and has not been
+reviewed by counsel; obtain legal review before relying on it.
 
----
+## 11. Roadmap
 
-## Curriculum
-
-- `curriculum/01-propositional-logic/lesson.md` — syntax, semantics, truth tables, tautologies, De Morgan.
-- `curriculum/02-state-machines/lesson.md` — transitions, reachability, invariants, counterexamples.
-
----
-
-## Tests
-
-```
-$ python -m unittest discover -s tests
-.....................................................
-Ran 60 tests in 0.6s
-
-OK
-```
-
-Coverage includes truth tables, operator precedence, malformed input, equivalence, SAT models, transition validity, reachability, deadlock detection, invariant preservation, counterexample traces, exploration limits and the four bundled examples.
-
----
-
-## Contribution policy
-
-Because the project uses a restrictive custom license, contributions require the owner's explicit agreement. See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Citation
-
-See [CITATION.cff](CITATION.cff).
-
-## License summary
-
-Source-available under the custom EULA in [EULA.md](EULA.md). Personal evaluation and learning use is permitted; redistribution, re-licensing and commercial use are not, except with written permission from the project owner. Provided **AS IS**, without warranty.
+See [`ROADMAP.md`](ROADMAP.md). Next: lessons 11–16, an LTL bounded checker
+over the existing explorer, a JSON schema for models, and a playground test
+harness integrated into CI.
