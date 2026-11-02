@@ -1,0 +1,19 @@
+{
+  "name": "counter_overflow",
+  "description": "A 2-bit counter that was allowed to reach 4. The invariant fails and the checker returns the shortest trace.",
+  "initial": [{"count": 0}],
+  "edges": [
+    {"label": "inc", "from": {"count": 0}, "to": {"count": 1}},
+    {"label": "inc", "from": {"count": 1}, "to": {"count": 2}},
+    {"label": "inc", "from": {"count": 2}, "to": {"count": 3}},
+    {"label": "inc", "from": {"count": 3}, "to": {"count": 4}},
+    {"label": "reset", "from": {"count": 1}, "to": {"count": 0}},
+    {"label": "reset", "from": {"count": 2}, "to": {"count": 0}},
+    {"label": "reset", "from": {"count": 3}, "to": {"count": 0}},
+    {"label": "reset", "from": {"count": 4}, "to": {"count": 0}}
+  ],
+  "invariants": [
+    {"name": "counter_stays_below_4", "description": "count <= 3 at all times.", "forbidden": {"count": 4}}
+  ],
+  "reachability_target": {"count": 4}
+}
