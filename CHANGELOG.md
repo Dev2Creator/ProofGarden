@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Corrected
+- Public author name corrected to Anika Mukherjee (Dev2Creator) and the project
+  contact address filled in as cuteypieanika@gmail.com across README, EULA, CITATION.cff,
+  CODE_OF_CONDUCT, SECURITY and pyproject.toml.
+
 ## 0.2.0 — 2026-11-02
 
 Curriculum and verification hardening.
@@ -18,7 +25,7 @@ Curriculum and verification hardening.
 ### Changed
 - README rewritten: real clone URL, curriculum status table, three-layer test
   instructions, explicit authorship and verification sections.
-- Public author identity standardised as Aneek Mukherjee (Dev2Creator) across
+- Public author identity standardised as Anika Mukherjee (Dev2Creator) across
   README, EULA, CITATION.cff and pyproject.toml.
 
 ### Review status

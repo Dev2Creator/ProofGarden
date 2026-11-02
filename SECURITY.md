@@ -1,7 +1,7 @@
 # Security
 
 ## Reporting
-Email the project owner (`[OWNER EMAIL — TO BE CONFIRMED]`) with a description and reproduction steps. Please do not open a public issue for a security report.
+Email the project owner (cuteypieanika@gmail.com) with a description and reproduction steps. Please do not open a public issue for a security report.
 
 ## Supported versions
 Only the latest release receives fixes.

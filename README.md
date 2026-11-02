@@ -7,7 +7,7 @@ machines, bounded model checking, and Hoare-style program reasoning — with an
 offline browser playground and a curriculum.
 
 - **Version:** 0.2.0 (see `CHANGELOG.md`)
-- **Public author identity:** Aneek Mukherjee (Dev2Creator)
+- **Public author identity:** Anika Mukherjee (Dev2Creator) — cuteypieanika@gmail.com
 - **License:** Custom EULA, AS IS — see [`EULA.md`](EULA.md)
 - **Status:** foundation track complete (10 of 16 lessons); formal-methods
   track in progress
@@ -183,11 +183,11 @@ scripts/            helper scripts
 
 ## 10. Authorship and license
 
-Public author identity: **Aneek Mukherjee (Dev2Creator)**. This is the name
-used in `README.md`, `EULA.md`, `CITATION.cff`, and `pyproject.toml`. The
-internal build specification (`AGENT.md`) is a private working document and is
-not published with the project; where the two disagree, the public identity
-above is authoritative.
+Public author identity: **Anika Mukherjee (Dev2Creator)**, contact
+**cuteypieanika@gmail.com**. This is the name used in `README.md`, `EULA.md`, `CITATION.cff`,
+and `pyproject.toml`. The internal build specification (`AGENT.md`) is a
+private working document and is not published with the project; where the two
+disagree, the public identity above is authoritative.
 
 Licensed under a custom end-user license — see [`EULA.md`](EULA.md). It is not
 an OSI-approved open-source license. It is not legal advice and has not been

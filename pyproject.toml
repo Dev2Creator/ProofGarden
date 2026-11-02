@@ -9,7 +9,7 @@ description = "Educational laboratory for formal methods: logic, state machines,
 requires-python = ">=3.11"
 readme = "README.md"
 license = { text = "Custom EULA — see EULA.md" }
-authors = [{ name = "Aneek Mukherjee (Dev2Creator)" }]
+authors = [{ name = "Anika Mukherjee (Dev2Creator)", email = "cuteypieanika@gmail.com" }]
 dependencies = []
 
 [tool.setuptools.packages.find]

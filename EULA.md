@@ -1,8 +1,8 @@
 # ProofGarden — End User License Agreement (Draft)
 
 **Project:** ProofGarden
-**Project owner:** Aneek Mukherjee (Dev2Creator)
-**Contact:** `[OWNER EMAIL — TO BE CONFIRMED]`
+**Project owner:** Anika Mukherjee (Dev2Creator)
+**Contact:** cuteypieanika@gmail.com
 **Version:** 0.2.0 (draft, November 2026)
 
 > This is a technical draft prepared with the project, not legal advice. It has not been reviewed by a lawyer. The project owner should obtain qualified legal review before public distribution, especially for commercial use and cross-border distribution. Nothing in this document should be read as a promise that any clause is enforceable in your jurisdiction.
@@ -99,6 +99,6 @@ effect to the maximum extent permitted by law.
 
 ## 13. Contact
 
-`[OWNER EMAIL — TO BE CONFIRMED]`
+cuteypieanika@gmail.com
 
 Before publishing this project, the owner must confirm the contact address and decide whether a governing-law clause is appropriate.
