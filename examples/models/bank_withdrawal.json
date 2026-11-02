@@ -1,0 +1,16 @@
+{
+  "name": "bank_withdrawal",
+  "description": "A withdrawal action that forgets a bounds check can drive the balance negative.",
+  "initial": [{"balance": 2}],
+  "edges": [
+    {"label": "withdraw", "from": {"balance": 2}, "to": {"balance": 1}},
+    {"label": "withdraw", "from": {"balance": 1}, "to": {"balance": 0}},
+    {"label": "withdraw", "from": {"balance": 0}, "to": {"balance": -1}},
+    {"label": "deposit",  "from": {"balance": -1}, "to": {"balance": 0}},
+    {"label": "deposit",  "from": {"balance": 0}, "to": {"balance": 1}}
+  ],
+  "invariants": [
+    {"name": "balance_never_negative", "description": "balance >= 0 in every reachable state.", "forbidden": {"balance": -1}}
+  ],
+  "reachability_target": {"balance": -1}
+}
