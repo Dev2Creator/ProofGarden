@@ -1,0 +1,13 @@
+{
+  "name": "deadlock_locks",
+  "description": "Two threads acquire two locks in opposite order and can both hold one lock forever.",
+  "initial": [{"a": "free", "b": "free"}],
+  "edges": [
+    {"label": "t1_acquire_a", "from": {"a": "free", "b": "free"}, "to": {"a": "held_by_t1", "b": "free"}},
+    {"label": "t2_acquire_b", "from": {"a": "free", "b": "free"}, "to": {"a": "free", "b": "held_by_t2"}},
+    {"label": "t1_wait_b",     "from": {"a": "held_by_t1", "b": "free"}, "to": {"a": "held_by_t1", "b": "held_by_t2"}},
+    {"label": "t2_wait_a",     "from": {"a": "free", "b": "held_by_t2"}, "to": {"a": "held_by_t1", "b": "held_by_t2"}}
+  ],
+  "invariants": [],
+  "expect_deadlock": true
+}
