@@ -1,0 +1,15 @@
+{
+  "name": "traffic_light",
+  "description": "A single-lane traffic light cycling red -> green -> amber -> red. Verification succeeds because the model has no invalid states.",
+  "initial": [{"light": "red"}],
+  "edges": [
+    {"label": "timer", "from": {"light": "red"},   "to": {"light": "green"}},
+    {"label": "timer", "from": {"light": "green"}, "to": {"light": "amber"}},
+    {"label": "timer", "from": {"light": "amber"}, "to": {"light": "red"}}
+  ],
+  "invariants": [
+    {"name": "no_undefined_signal", "description": "The light is always one of red, green or amber.", "forbidden": {"light": "undefined"}}
+  ],
+  "reachability_target": {"light": "amber"},
+  "expect_deadlock": false
+}
