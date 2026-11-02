@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ProofGarden — Learn, Explore, Verify</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div>
+      <p class="eyebrow">ProofGarden</p>
+      <h1>Learn, Explore, Verify</h1>
+      <p class="lede">An educational laboratory for logic and bounded model checking. Every result below is computed in your browser.</p>
+    </div>
+    <button id="theme-toggle" class="ghost" type="button" aria-label="Toggle colour theme">Theme</button>
+  </div>
+  <nav class="wrap tabs" role="tablist" aria-label="Playground sections">
+    <button role="tab" aria-selected="true" aria-controls="panel-logic" id="tab-logic" class="tab">Logic Lab</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-machines" id="tab-machines" class="tab">State Machines</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-checker" id="tab-checker" class="tab">Model Checking</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-invariants" id="tab-invariants" class="tab">Invariants</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-temporal" id="tab-temporal" class="tab">Temporal Logic</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-curriculum" id="tab-curriculum" class="tab">Curriculum</button>
+  </nav>
+</header>
+
+<main class="wrap">
+  <section id="panel-logic" role="tabpanel" aria-labelledby="tab-logic" class="panel">
+    <h2>Logic Lab</h2>
+    <p class="muted">Enter a propositional formula. Supported operators: NOT, AND, OR, XOR, IMPLIES, IFF (symbols <code>~ &amp; | ^ -&gt; &lt;-&gt;</code> also work).</p>
+    <form id="logic-form" class="stack">
+      <label for="logic-input">Formula</label>
+      <input id="logic-input" name="formula" type="text" value="(P AND Q) IMPLIES P" autocomplete="off" spellcheck="false" />
+      <div class="row">
+        <button type="submit" class="primary">Build truth table</button>
+        <button type="button" id="logic-example" class="ghost">De Morgan example</button>
+      </div>
+    </form>
+    <p id="logic-error" class="error" role="alert" hidden></p>
+    <div id="logic-output" class="output" aria-live="polite"></div>
+  </section>
+
+  <section id="panel-machines" role="tabpanel" aria-labelledby="tab-machines" class="panel" hidden>
+    <h2>State Machine Explorer</h2>
+    <div class="row">
+      <label for="machine-select">Model</label>
+      <select id="machine-select"></select>
+    </div>
+    <p id="machine-description" class="muted"></p>
+    <div class="machine-layout">
+      <div id="machine-graph" class="graph" role="img" aria-label="State graph"></div>
+      <aside id="machine-detail" class="detail">
+        <p class="muted">Select a state to inspect its outgoing transitions.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="panel-checker" role="tabpanel" aria-labelledby="tab-checker" class="panel" hidden>
+    <h2>Model Checking Lab</h2>
+    <p class="muted">Breadth-first exploration of the finite model. “Verified” means every reachable state was explored.</p>
+    <div class="row">
+      <label for="checker-select">Model</label>
+      <select id="checker-select"></select>
+      <label for="checker-limit">State limit</label>
+      <input id="checker-limit" type="number" min="1" max="5000" value="5000" />
+      <button id="checker-run" class="primary" type="button">Run exploration</button>
+    </div>
+    <div id="checker-output" class="output" aria-live="polite"></div>
+  </section>
+
+  <section id="panel-invariants" role="tabpanel" aria-labelledby="tab-invariants" class="panel" hidden>
+    <h2>Invariant Playground</h2>
+    <p class="muted">Toggle the repair below and watch the invariant flip between violated and verified.</p>
+    <div class="row">
+      <label for="invariant-select">Model</label>
+      <select id="invariant-select"></select>
+      <label class="check"><input type="checkbox" id="invariant-repair" /> Apply repair (remove edges into forbidden states)</label>
+    </div>
+    <div id="invariant-output" class="output" aria-live="polite"></div>
+  </section>
+
+  <section id="panel-temporal" role="tabpanel" aria-labelledby="tab-temporal" class="panel" hidden>
+    <h2>Temporal Logic Explorer</h2>
+    <p class="muted">Predicates are written as <code>key=value</code> pairs joined by <code>&amp;</code>. Semantics are evaluated over the explored finite graph only.</p>
+    <div class="row">
+      <label for="temporal-select">Model</label>
+      <select id="temporal-select"></select>
+      <label for="temporal-p">p</label>
+      <input id="temporal-p" type="text" value="light=green" />
+      <label for="temporal-q">q</label>
+      <input id="temporal-q" type="text" value="light=red" />
+      <button id="temporal-run" class="primary" type="button">Evaluate</button>
+    </div>
+    <div id="temporal-output" class="output" aria-live="polite"></div>
+  </section>
+
+  <section id="panel-curriculum" role="tabpanel" aria-labelledby="tab-curriculum" class="panel" hidden>
+    <h2>Learning Navigator</h2>
+    <p class="muted">Progress is stored in this browser only.</p>
+    <ol id="curriculum-list" class="curriculum"></ol>
+  </section>
+</main>
+
+<footer class="site-footer wrap">
+  <p>ProofGarden 0.1.0 — educational software. Results apply to the finite model that was explored. See <code>EULA.md</code> and <code>docs/limitations.md</code>.</p>
+</footer>
+
+<script src="js/logic.js"></script>
+<script src="js/models.js"></script>
+<script src="js/modelchecker.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
